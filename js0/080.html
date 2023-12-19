@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>一覧画面</title>
+    <link rel="stylesheet" href="https://unpkg.com/sanitize.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <p>
+      店名選択：<select>
+        <option value=""></option>
+        <option value="日本橋本店">日本橋本店</option>
+        <option value="新宿店">新宿店</option>
+        <option value="長野店">長野店</option>
+      </select>
+    </p>
+
+    <form action="List.html">
+      <table id ="shopTable">
+        <tr>
+          <th>商品ID</th>
+          <th>商品名</th>
+          <th>値段(円)</th>
+          <th>注文数</th>
+          <th>金額(円)</th>
+        </tr>
+        <tr>
+          <td>001</td>
+          <td>りんご</td>
+          <td>200</td>
+          <td class="order"></td>
+          <td><div class="red" id="kingaku0"></div></td>
+        </tr>
+        <tr>
+          <td>007</td>
+          <td>甘栗</td>
+          <td>300</td>
+          <td class="order"></td>
+          <td><div class="red" id="kingaku1"></div></td>
+        </tr>
+      </table>
+
+      <button type="submit">送信する</button>
+    </form>
+  </body>
+  <script>
+    orderList();
+    function orderList() {
+      let select = [];
+      let order = document.getElementsByClassName('order');
+      for(let i = 0; i < order.length; i++){
+        let selectHtml = "<select id=select"+i+">";
+        for(let j = 0; j < 10; j++){
+          selectHtml = selectHtml + "<option>" + j + "</option>";
+        }
+        order[i].innerHTML = selectHtml + "</select>";
+        select[i] = document.getElementById("select" + i);
+        select[i].addEventListener("change", calc);
+      }
+  }
+  function calc() {
+    let elements;
+    let orderNumber;
+    let kingakuElement;
+    let price;
+    let order = document.getElementsByClassName("order");
+    let shopTable = document.getElementById("shopTable");
+    for(let i = 0; i < order.length; i++) {
+      elements = document.forms[0].elements[i];
+      orderNumber = elements.value;
+      price = shopTable.rows[i + 1].cells[2].innerText;
+      if(orderNumber > 0){
+        kingakuElement = document.getElementById("kingaku" + i);
+        kingakuElement.innerHTML = orderNumber * price;
+      }
+    }
+  }
+  </script>
+</html>
